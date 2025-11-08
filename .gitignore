@@ -1,0 +1,6 @@
+# Ignorar arquivos de configuração e build
+*.class
+*.log
+/bin/
+.idea/
+.vscode/
