@@ -21,3 +21,10 @@
 
 ## 🧠 Observações
 Este documento tem como objetivo registrar as **etapas de evolução do sistema**, servindo como histórico de desenvolvimento e acompanhamento de versões.  
+---
+
+## 📘 Versão 0.0.2
+- Definição de prioridades do sistema.
+- Criação da prova de conceito (POC).
+- Planejamento do MVP.
+- Adição do arquivo `/docs/planejamento.md`.
