@@ -1,54 +1,82 @@
-import java.util.Scanner;
+import java.io.*;
+import java.util.*;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        int opcao;
+    public static void main(String[] args) throws Exception {
+        Scanner sc = new Scanner(System.in);
 
-        do {
-            System.out.println("==== SISTEMA DE CONTROLE DE DESPESAS ====");
-            System.out.println("1. Entrar Despesa");
-            System.out.println("2. Anotar Pagamento");
-            System.out.println("3. Listar Despesas em Aberto no período");
-            System.out.println("4. Listar Despesas Pagas no período");
-            System.out.println("5. Gerenciar Tipos de Despesa");
-            System.out.println("6. Gerenciar Usuários");
-            System.out.println("0. Sair");
-            System.out.print("Escolha uma opção: ");
+        while (true) {
+            System.out.println("=== MENU ===");
+            System.out.println("1 - Entrar Despesa");
+            System.out.println("2 - Anotar Pagamento");
+            System.out.println("3 - Cadastrar Usuário");
+            System.out.println("4 - Listar Despesas");
+            System.out.println("0 - Sair");
 
-            opcao = scanner.nextInt();
-            scanner.nextLine(); 
+            int op = sc.nextInt();
+            sc.nextLine();
 
-            switch (opcao) {
-                case 1:
-                    System.out.println(">>> Entrar Despesa selecionado");
-                    break;
-                case 2:
-                    System.out.println(">>> Anotar Pagamento selecionado");
-                    break;
-                case 3:
-                    System.out.println(">>> Listar Despesas em Aberto selecionado");
-                    break;
-                case 4:
-                    System.out.println(">>> Listar Despesas Pagas selecionado");
-                    break;
-                case 5:
-                    System.out.println(">>> Gerenciar Tipos de Despesa selecionado");
-                    break;
-                case 6:
-                    System.out.println(">>> Gerenciar Usuários selecionado");
-                    break;
-                case 0:
-                    System.out.println("Saindo do sistema...");
-                    break;
-                default:
-                    System.out.println("Opção inválida. Tente novamente.");
-                    break;
+            if (op == 1) {
+                System.out.print("Descrição: ");
+                String desc = sc.nextLine();
+                System.out.print("Valor: ");
+                double v = sc.nextDouble();
+                sc.nextLine();
+
+                Despesa d = new Despesa(desc, v);
+                salvar("data/despesas.txt", d.toString());
             }
 
-            System.out.println();
-        } while (opcao != 0);
+            else if (op == 2) {
+                System.out.print("Pagamento: ");
+                String desc = sc.nextLine();
+                System.out.print("Valor: ");
+                double v = sc.nextDouble();
+                sc.nextLine();
 
-        scanner.close();
+                Pagamento p = new Pagamento(desc, v);
+                salvar("data/pagamentos.txt", p.toString());
+            }
+
+            else if (op == 3) {
+                System.out.print("Login: ");
+                String login = sc.nextLine();
+                System.out.print("Senha: ");
+                String senha = sc.nextLine();
+
+                Usuario u = new Usuario(login, Criptografia.sha256(senha));
+                salvar("data/usuarios.txt", u.toString());
+            }
+
+            else if (op == 4) {
+                listar("data/despesas.txt");
+            }
+
+            else if (op == 0) {
+                break;
+            }
+        }
+
+        sc.close();
+    }
+
+    public static void salvar(String path, String texto) throws Exception {
+        FileWriter fw = new FileWriter(path, true);
+        fw.write(texto + "\n");
+        fw.close();
+    }
+
+    public static void listar(String path) throws Exception {
+        File file = new File(path);
+        if (!file.exists()) {
+            System.out.println("Nenhuma despesa ainda.");
+            return;
+        }
+
+        Scanner reader = new Scanner(file);
+        while (reader.hasNextLine()) {
+            System.out.println(reader.nextLine());
+        }
+        reader.close();
     }
 }
